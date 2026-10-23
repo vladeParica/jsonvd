@@ -14,18 +14,17 @@ Version 1.0.0 is implemented and passes the regression suite on PostgreSQL 14–
 - [x] Inference: `parse_value`, `typeof_text`, `infer_schema`, `recordset_definition`
 - [x] Legacy paths: `legacy_path`, `to_legacy_path` — [ADR-0005](../00-project/adr/0005-preserve-legacy-path-semantics-with-a-separate-compat-layer.md)
 - [x] Compat layer: `compat/jsonvd_legacy.sql`
+- [x] Compat errors no longer echo input values (`convert_array_jsonVD`) — #2
 - [x] Regression suite, Docker test script, CI on PostgreSQL 14–18 — [ADR-0007](../00-project/adr/0007-regression-tests-with-pg-regress-and-docker.md)
 - [x] Repository governance: MIT license, rulesets, CODEOWNERS — [ADR-0008](../00-project/adr/0008-repository-governance-and-licensing.md)
 
 ## In progress / remaining
-- [ ] `convert_array_jsonVD` (compat) echoes the invalid JSON fragment in its error; remove the value from
-      the message — see [data classification](../00-project/data-classification.md).
 - [ ] Bump `actions/checkout` to v5 in CI (Node.js 20 deprecation warning on GitHub Actions).
 - [ ] Add a regression test for numbers that overflow `numeric` in `parse_value` (verified manually:
       `'1e1000000'` is returned as a string).
 - [ ] Add `META.json` and publish to PGXN — `<TODO — Human-in-the-Loop: decide if and when>`.
 - [ ] Define the upgrade-script process for 1.1.0 (`sql/jsonvd--1.0.0--1.1.0.sql`) — see the deploy guide.
-- [ ] Decide on PostgreSQL 14 after its end of life (Nov 2026) — [ADR-0004](../00-project/adr/0004-support-postgresql-14-and-later.md).
+- [ ] Drop PostgreSQL 14 in 1.1.0 (#20) — [ADR-0010](../00-project/adr/0010-track-upstream-supported-postgresql-versions.md).
 
 ## Implementation notes
 - **Last-step rule of legacy paths.** Found by running the originals: the `clave` of the last step is not

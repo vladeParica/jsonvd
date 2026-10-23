@@ -23,7 +23,7 @@ At development time: contributor → pull request → CI → maintainer review �
 | **T**ampering | SQL injection through document values or keys | Core, compat | No SQL built from values; the one `EXECUTE` (`probando_locura`) quotes identifiers with `%I` and passes data with `USING` ([ADR-0003](../00-project/adr/0003-no-dynamic-sql-and-raised-errors.md)) |
 | **T**ampering | Fork pull request runs code in CI with repository credentials | CI | Workflow runs from outside contributors need maintainer approval; default token is read-only |
 | **R**epudiation | Not applicable: the library performs no actions on behalf of users | — | Auditing is the host database's responsibility |
-| **I**nformation disclosure | Document values echoed in error messages end up in server logs | Core, compat | Core errors include only paths, types and counts. Exception: `convert_array_jsonVD` echoes the invalid fragment (backlog item) |
+| **I**nformation disclosure | Document values echoed in error messages end up in server logs | Core, compat | Errors include only paths, positions, types and counts; covered by a test for the compat layer's invalid-JSON error |
 | **I**nformation disclosure | Secrets returned to clients inside documents | Caller | `delete_key_deep` provided to strip keys; responsibility stays with the caller |
 | **D**enial of service | Very large or deeply nested documents make recursive traversal use a lot of memory and CPU | `_nodes`, `diff`, `merge_deep`, `delete_key_deep` | Bounded by the caller's input; `statement_timeout` and `work_mem` apply; recursion depth bounded by PostgreSQL's `max_stack_depth` for PL/pgSQL |
 | **E**levation of privilege | Trusted extension install script used to run code as a privileged role | Install script | Script only creates functions in its own schema; no `SECURITY DEFINER`, no `ALTER`/`GRANT` on other objects |
@@ -32,7 +32,7 @@ At development time: contributor → pull request → CI → maintainer review �
 | Threat | Damage | Reproducibility | Exploitability | Affected users | Discoverability | Total |
 |---|---|---|---|---|---|---|
 | DoS via huge or deep documents | 5 | 9 | 6 | 3 | 6 | 29 |
-| Values in error messages reach logs (compat `convert_array_jsonVD`) | 4 | 8 | 3 | 2 | 4 | 21 |
+| Values in error messages reach logs (fixed in #2; kept for regressions) | 4 | 2 | 3 | 2 | 4 | 15 |
 | `search_path` shadowing of operators | 3 | 4 | 2 | 1 | 3 | 13 |
 | Malicious PR merged | 8 | 2 | 2 | 8 | 3 | 23 |
 | SQL injection through values | 9 | 1 | 1 | 5 | 2 | 18 |

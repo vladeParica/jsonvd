@@ -26,6 +26,8 @@ SELECT json_agg_build_vd('k', 'v');
 
 SELECT convert_array_jsonVD('{"tag":"#1"}#{"b":2}');
 SELECT convert_array_jsonVD('{"a":1}#[1]');
+-- invalid JSON: the error names the element, never its content
+SELECT convert_array_jsonVD('{"a":1}#{"password":"s3cret"');
 
 SELECT json_deleteVD('{"name":"O''Brien","x":1}', 'x');
 SELECT json_deleteVD('{"name":"O''Brien","x":1}', '"name"');
