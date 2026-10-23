@@ -59,7 +59,9 @@ psql -d mydb -f compat/jsonvd_legacy.sql
 1. Merge the release changes into `develop` through pull requests (green CI, approval).
 2. On a `release/v<version>` branch: update `default_version` in `jsonvd.control`, `version` (twice) in
    `META.json`, `version()`, add `sql/jsonvd--<old>--<new>.sql` (and keep the full script for fresh
-   installs), and date the `CHANGELOG.md` entry (`## <version> — YYYY-MM-DD`).
+   installs), and rename the `CHANGELOG.md` section `## Unreleased` to `## <version> — YYYY-MM-DD`.
+   Changes that do not touch `sql/` or `compat/` (docs, CI, metadata) do not need a new version; they wait
+   under `Unreleased` for the next one.
 3. Open a pull request `release/v<version>` → `main`; merge after CI passes, then back-merge `main` into
    `develop` with another pull request.
 4. Tag `v<version>` on `main` and push the tag. The `Release` workflow then:
