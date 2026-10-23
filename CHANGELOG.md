@@ -1,9 +1,9 @@
 # Changelog
 
-## 1.0.0
+## 1.0.0 — 2026-10-23
 
 First release as a PostgreSQL extension (`CREATE EXTENSION jsonvd`), rewritten
-from the original 2018 procedures (kept in `legacy/`).
+from the original 2018 procedures (kept in `legacy/`). Supports PostgreSQL 14–18.
 
 - Search: `find_path`, `find_paths`, `contains_deep`, `flatten`.
 - Comparison: `diff`.
