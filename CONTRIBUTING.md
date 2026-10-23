@@ -33,3 +33,9 @@ is correct.
 - Mark pure functions `IMMUTABLE PARALLEL SAFE`.
 - Use [Conventional Commits](https://www.conventionalcommits.org/) in English,
   e.g. `feat: add jsonvd.paths_matching`.
+
+## Documentation
+
+The project is documented by lifecycle phase in [`docs/`](docs/). When a change alters a decision, add or
+supersede an ADR in `docs/00-project/adr/`; when it changes a function, update
+[`docs/02-design/api-contracts.md`](docs/02-design/api-contracts.md).
