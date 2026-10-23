@@ -1,0 +1,6 @@
+# jsonvd: JSON utilities for PostgreSQL
+comment = 'JSONB utilities: path search, diff, deep merge, type and schema inference'
+default_version = '1.0.0'
+schema = jsonvd
+relocatable = false
+trusted = true
