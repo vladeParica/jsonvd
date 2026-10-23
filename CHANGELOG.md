@@ -1,0 +1,15 @@
+# Changelog
+
+## 1.0.0
+
+First release as a PostgreSQL extension (`CREATE EXTENSION jsonvd`), rewritten
+from the original 2018 procedures (kept in `legacy/`).
+
+- Search: `find_path`, `find_paths`, `contains_deep`, `flatten`.
+- Comparison: `diff`.
+- Merge: `merge_deep`, `merge_patch` (RFC 7396).
+- Modification: `push`, `set_path`, `delete_key_deep`.
+- Inference: `parse_value`, `typeof_text`, `build_object`, `infer_schema`, `recordset_definition`.
+- Legacy paths: `legacy_path`, `to_legacy_path`.
+- `compat/jsonvd_legacy.sql`: the original names on top of the new API.
+- `pg_regress` test suite and CI on PostgreSQL 14 to 18.
