@@ -72,8 +72,9 @@ BEGIN
 		pending := NULL;
 	END LOOP;
 
+	-- The message gives only the position: values must not reach the server log.
 	IF pending IS NOT NULL THEN
-		RAISE EXCEPTION 'convert_array_jsonVD: invalid JSON: %', pending
+		RAISE EXCEPTION 'convert_array_jsonVD: invalid JSON in element %', jsonb_array_length(result) + 1
 			USING ERRCODE = 'invalid_text_representation';
 	END IF;
 
