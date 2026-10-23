@@ -59,6 +59,9 @@ SELECT convert_array_jsonVD('{"tag":"#1"}#{"b":2}');
 
 SELECT convert_array_jsonVD('{"a":1}#[1]');
 ERROR:  convert_array_jsonVD: every element must be an object
+-- invalid JSON: the error names the element, never its content
+SELECT convert_array_jsonVD('{"a":1}#{"password":"s3cret"');
+ERROR:  convert_array_jsonVD: invalid JSON in element 2
 SELECT json_deleteVD('{"name":"O''Brien","x":1}', 'x');
     json_deletevd    
 ---------------------

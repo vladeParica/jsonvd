@@ -26,4 +26,4 @@
 - No tables or migrations: the data model is in-memory structures (architecture §3).
 - Security controls implemented: no dynamic SQL on values, raised errors, no `SECURITY DEFINER` (`sql/jsonvd--1.0.0.sql`).
 - No secrets or configuration exist.
-- Known open item: `convert_array_jsonVD` echoes the input fragment in an error (backlog).
+- Error messages carry no input values; the last exception (`convert_array_jsonVD`) was fixed in #2.
