@@ -33,6 +33,13 @@ FROM unnest(ARRAY[
             | ""           | string
 (21 rows)
 
+-- A number too large for numeric is returned as a string, not an error
+SELECT jsonvd.parse_value('1e1000000') AS overflow, jsonvd.typeof_text('1e1000000') AS overflow_type;
+  overflow   | overflow_type 
+-------------+---------------
+ "1e1000000" | string
+(1 row)
+
 -- SQL NULL in, SQL NULL out
 SELECT jsonvd.parse_value(NULL) IS NULL AS strict_null;
  strict_null 

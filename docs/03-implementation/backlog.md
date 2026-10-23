@@ -19,9 +19,6 @@ Version 1.0.0 is implemented and passes the regression suite on PostgreSQL 14–
 - [x] Repository governance: MIT license, rulesets, CODEOWNERS — [ADR-0008](../00-project/adr/0008-repository-governance-and-licensing.md)
 
 ## In progress / remaining
-- [ ] Bump `actions/checkout` to v5 in CI (Node.js 20 deprecation warning on GitHub Actions).
-- [ ] Add a regression test for numbers that overflow `numeric` in `parse_value` (verified manually:
-      `'1e1000000'` is returned as a string).
 - [ ] Publish to PGXN (#8): `META.json` and the release workflow are ready; needs the maintainer's PGXN
       account and the `PGXN_USERNAME` / `PGXN_PASSWORD` secrets.
 - [ ] Define the upgrade-script process for 1.1.0 (`sql/jsonvd--1.0.0--1.1.0.sql`) — see the deploy guide.
