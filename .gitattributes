@@ -1,0 +1,4 @@
+# pg_regress compares byte by byte: always use LF for text files
+* text=auto eol=lf
+*.png binary
+*.jpg binary
