@@ -1,6 +1,6 @@
 # ADR-0004 — Support PostgreSQL 14 and later
 
-> **AI-DLC phase:** `00-project`  ·  **Status:** `accepted`
+> **AI-DLC phase:** `00-project`  ·  **Status:** `superseded by ADR-0010` (from version 1.1.0)
 > **Date:** 2026-10-23  ·  **Owner:** Vlade Párica
 
 ## Context
@@ -21,5 +21,5 @@ need a newer version are not used unless the minimum is raised by a new ADR.
 - **Positive:** covers every upstream-supported version, so most production servers can install it.
 - **Negative / costs:** cannot use newer syntax (e.g. `JSON_TABLE`, SQL/JSON query functions from 17);
   `parse_value` pays for an exception block on JSON-looking input.
-- **Open (Human-in-the-Loop):** `<TODO — Human-in-the-Loop: decide whether to drop PostgreSQL 14 from CI
-  and the docs after its end of life in November 2026>`
+- **Open (Human-in-the-Loop):** resolved in #6 — keep 14 for 1.0.x, drop it in 1.1.0; see
+  [ADR-0010](0010-track-upstream-supported-postgresql-versions.md).

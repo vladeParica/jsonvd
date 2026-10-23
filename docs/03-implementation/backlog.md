@@ -25,7 +25,7 @@ Version 1.0.0 is implemented and passes the regression suite on PostgreSQL 14–
       `'1e1000000'` is returned as a string).
 - [ ] Add `META.json` and publish to PGXN — `<TODO — Human-in-the-Loop: decide if and when>`.
 - [ ] Define the upgrade-script process for 1.1.0 (`sql/jsonvd--1.0.0--1.1.0.sql`) — see the deploy guide.
-- [ ] Decide on PostgreSQL 14 after its end of life (Nov 2026) — [ADR-0004](../00-project/adr/0004-support-postgresql-14-and-later.md).
+- [ ] Drop PostgreSQL 14 in 1.1.0 (#20) — [ADR-0010](../00-project/adr/0010-track-upstream-supported-postgresql-versions.md).
 
 ## Implementation notes
 - **Last-step rule of legacy paths.** Found by running the originals: the `clave` of the last step is not
