@@ -1,4 +1,4 @@
-<p align="center"><img src="Logo/logoExtensionPostgresql.png" alt="jsonvd" width="220"></p>
+<p align="center"><img src="Logo/jsonvd-logo.svg" alt="jsonvd" width="220"></p>
 
 # jsonvd
 
