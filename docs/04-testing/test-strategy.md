@@ -46,5 +46,4 @@
 | Gap | Risk | Decision (fix now / accept) |
 |---|---|---|
 | No automated performance or memory test for large/deep documents | Regressions in traversal cost go unnoticed | Accept for 1.0; manual benchmark documented above |
-| Numeric overflow in `parse_value` not covered by a test | Behavior could change silently | Fix: backlog item |
 | The legacy-equivalence check was run manually, not in CI | Drift if `legacy_path` changes | Accept: results are encoded as expected outputs in `test/sql/legacy.sql` |
