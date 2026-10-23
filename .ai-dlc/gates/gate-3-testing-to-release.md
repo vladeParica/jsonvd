@@ -4,26 +4,27 @@
 > **Goal:** confirm the system is tested, deployable and observable before going live.
 
 ## Testing
-- [ ] `docs/04-testing/` has a test strategy and it was executed (unit/integration/e2e as applicable).
-- [ ] Critical/safety paths and the abuse scenarios from the PRD are covered.
-- [ ] Known gaps are listed with a decision (fix now vs accept).
+- [x] `docs/04-testing/` has a test strategy and it was executed (unit/integration/e2e as applicable). *(CI on every PR, PostgreSQL 14–18)*
+- [x] Critical/safety paths and the abuse scenarios from the PRD are covered.
+- [x] Known gaps are listed with a decision (fix now vs accept).
 
 ## Deployment
-- [ ] `docs/05-deployment/` has a step-by-step deploy guide and a runbook.
-- [ ] Environment variables/secrets documented; secret generation covered.
-- [ ] Backups/rollback strategy defined and tested (if data matters).
+- [x] `docs/05-deployment/` has a step-by-step deploy guide and a runbook.
+- [x] Environment variables/secrets documented; secret generation covered. *(none at runtime; release secrets `PGXN_USERNAME` / `PGXN_PASSWORD` documented)*
+- [ ] Backups/rollback strategy defined and tested (if data matters). *(defined; not testable until a second version exists — upgrade/rollback scripts come with #7. The library stores no data.)*
 
 ## Monitoring
-- [ ] `docs/06-monitoring/` defines the key metrics, alerts and SLOs.
-- [ ] Health checks exist and are documented.
+- [x] `docs/06-monitoring/` defines the key metrics, alerts and SLOs.
+- [x] Health checks exist and are documented. *(`jsonvd.version()`, `pg_extension`)*
 
 ## Compliance / sign-off
-- [ ] Data-classification obligations (retention, audit, encryption) are met or the debt is explicit.
-- [ ] Remaining `<TODO — Human-in-the-Loop>` items are resolved or consciously deferred.
+- [x] Data-classification obligations (retention, audit, encryption) are met or the debt is explicit. *(log-leak exception fixed in #2)*
+- [x] Remaining `<TODO — Human-in-the-Loop>` items are resolved or consciously deferred. *(deferred as issues in milestone v1.1.0)*
 
 ## Verdict
-- [ ] **Gate 3 passed** — cleared to release.
-- Approved by: `<TODO>`  ·  Date: `<TODO>`
+- [x] **Gate 3 passed** — cleared to release. **Conditionally passed (retroactive; 1.0.0 already released):**
+  upgrade and rollback will be tested with the first upgrade script (#7).
+- Approved by: Vlade Párica (#11)  ·  Date: 2026-10-23
 
 ## Evidence (prepared for review — not approval)
 - Test strategy and coverage map: `docs/04-testing/test-strategy.md`; suite passing on PostgreSQL 14–18 in CI.

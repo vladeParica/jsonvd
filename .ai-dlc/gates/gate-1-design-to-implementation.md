@@ -4,29 +4,30 @@
 > **Goal:** confirm architecture, threat model and key decisions (ADRs) are complete before writing code.
 
 ## Architecture
-- [ ] `docs/02-design/architecture.md` describes style, layers and the data model.
-- [ ] C4 diagrams present and valid (Mermaid):
-  - [ ] `docs/architecture/c4-context.md`
-  - [ ] `docs/architecture/c4-container.md`
-  - [ ] `docs/architecture/c4-component-*.md` (per key container)
-- [ ] Any critical design property is explicit (e.g. deterministic vs ML, stateless vs stateful).
+- [x] `docs/02-design/architecture.md` describes style, layers and the data model.
+- [x] C4 diagrams present and valid (Mermaid) — rendered without errors with `@mermaid-js/mermaid-cli` 11.4.2:
+  - [x] `docs/architecture/c4-context.md`
+  - [x] `docs/architecture/c4-container.md`
+  - [x] `docs/architecture/c4-component.md` (the one key container: the `jsonvd` schema)
+- [x] Any critical design property is explicit (e.g. deterministic vs ML, stateless vs stateful). *(pure, `IMMUTABLE`, stateless — ADR-0006)*
 
 ## Security
-- [ ] `docs/02-design/threat-model.md` applies STRIDE to the main components.
-- [ ] Threats prioritized with DREAD; cover data exposure, spoofing, DoS, data loss.
-- [ ] Encryption in transit and at rest for sensitive data is confirmed as a requirement, not an option.
+- [x] `docs/02-design/threat-model.md` applies STRIDE to the main components.
+- [x] Threats prioritized with DREAD; cover data exposure, spoofing, DoS, data loss. *(data loss: the library stores no data)*
+- [x] Encryption in transit and at rest for sensitive data is confirmed as a requirement, not an option. *(provided by the host PostgreSQL; the library keeps no data outside the server process)*
 
 ## Contracts
-- [ ] `docs/02-design/api-contracts.md` lists the endpoints.
-- [ ] The API contract (design and/or generated spec) is valid and coherent.
+- [x] `docs/02-design/api-contracts.md` lists the endpoints. *(SQL functions)*
+- [x] The API contract (design and/or generated spec) is valid and coherent. *(source of truth: `sql/jsonvd--1.0.0.sql`; behavior pinned by `test/expected/`)*
 
 ## Decisions (ADR)
-- [ ] Every non-trivial decision has an ADR in the standard format (Context / Decision / Alternatives / Consequences).
-- [ ] Open decisions still marked `<TODO — Human-in-the-Loop>`.
+- [x] Every non-trivial decision has an ADR in the standard format (Context / Decision / Alternatives / Consequences).
+- [x] Open decisions still marked `<TODO — Human-in-the-Loop>`.
 
 ## Verdict
-- [ ] **Gate 1 passed** — cleared to enter `03-implementation`.
-- Approved by: `<TODO>`  ·  Date: `<TODO>`
+- [x] **Gate 1 passed** — cleared to enter `03-implementation`. **Passed (retroactive):** the design was
+  documented after the 1.0.0 implementation; residual risks accepted in #10.
+- Approved by: Vlade Párica (#11)  ·  Date: 2026-10-23
 
 ## Evidence (prepared for review — not approval)
 - Architecture and data structures: `docs/02-design/architecture.md`.

@@ -1,27 +1,33 @@
 # C4 — Context diagram
 
 > **AI-DLC phase:** `02-design`  ·  Level 1 (the system in its environment).
+> Drawn as a Mermaid flowchart with C4 styling: Mermaid's native C4 syntax is experimental and lays out
+> poorly on GitHub.
 
 ```mermaid
-C4Context
-    title System context — jsonvd
+flowchart TB
+    contrib["<b>Contributor</b><br/><i>[Person]</i><br/>Proposes changes through pull requests"]
+    maint["<b>Maintainer</b><br/><i>[Person]</i><br/>Reviews and merges changes, cuts releases"]
+    caller["<b>Caller</b><br/><i>[Person]</i><br/>Application developer or DBA writing SQL"]
+    app["<b>Application</b><br/><i>[External system]</i><br/>Calls jsonvd through SQL"]
 
-    Person(dev, "Caller", "Application developer or DBA writing SQL")
-    Person(maint, "Maintainer", "Reviews and merges changes, cuts releases")
-    Person(contrib, "Contributor", "Proposes changes through pull requests")
+    gh["<b>GitHub</b><br/><i>[External system]</i><br/>Source, pull requests, CI on every supported version"]
+    jsonvd["<b>jsonvd</b><br/><i>[Software system]</i><br/>PostgreSQL extension with JSONB utilities"]
+    pg["<b>PostgreSQL 14–18</b><br/><i>[External system]</i><br/>Host database that runs the functions"]
 
-    System(jsonvd, "jsonvd", "PostgreSQL extension with JSONB utilities")
+    contrib -- "Opens pull requests" --> gh
+    maint -- "Approves, merges, releases" --> gh
+    gh -- "Tests and releases" --> jsonvd
+    caller -- "Installs with CREATE EXTENSION" --> pg
+    app -- "Runs queries that call jsonvd" --> pg
+    pg -- "Executes in the caller's session" --> jsonvd
 
-    System_Ext(pg, "PostgreSQL 14-18", "Host database that runs the functions")
-    System_Ext(app, "Application", "Calls jsonvd functions through SQL")
-    System_Ext(gh, "GitHub", "Source, pull requests, CI on every supported version")
-
-    Rel(dev, pg, "Installs with CREATE EXTENSION", "SQL")
-    Rel(app, pg, "Runs queries that call jsonvd", "PostgreSQL protocol")
-    Rel(pg, jsonvd, "Executes functions in the caller's session")
-    Rel(contrib, gh, "Opens pull requests", "HTTPS")
-    Rel(maint, gh, "Approves, merges, releases", "HTTPS")
-    Rel(gh, jsonvd, "Tests every change")
+    classDef person fill:#08427B,stroke:#073B6F,color:#fff
+    classDef system fill:#1168BD,stroke:#0B4884,color:#fff
+    classDef external fill:#999999,stroke:#8A8A8A,color:#fff
+    class contrib,maint,caller person
+    class jsonvd system
+    class gh,pg,app external
 ```
 
 **Notes**

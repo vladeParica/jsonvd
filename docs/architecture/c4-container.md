@@ -1,25 +1,32 @@
 # C4 — Container diagram
 
 > **AI-DLC phase:** `02-design`  ·  Level 2 (containers inside the system).
+> Drawn as a Mermaid flowchart with C4 styling (see the note in `c4-context.md`).
 
 ```mermaid
-C4Container
-    title Containers — jsonvd inside a PostgreSQL database
+flowchart TB
+    caller["<b>Caller</b><br/><i>[Person]</i><br/>Application or DBA"]
 
-    Person(caller, "Caller", "Application or DBA")
+    subgraph db["PostgreSQL database"]
+        direction TB
+        tables[("<b>Caller tables</b><br/><i>[jsonb columns]</i><br/>The caller's documents")]
+        compat["<b>Compat functions</b><br/><i>[SQL script in the caller's schema]</i><br/>Legacy procedure names on top of jsonvd"]
+        ext["<b>jsonvd schema</b><br/><i>[Extension, SQL and PL/pgSQL]</i><br/>Path search, diff, merge, inference, legacy paths"]
+        catalog[("<b>System catalog</b><br/><i>[pg_catalog]</i><br/>Function definitions, extension metadata")]
+    end
 
-    System_Boundary(db, "PostgreSQL database") {
-        Container(ext, "jsonvd schema", "Extension, SQL and PL/pgSQL", "Path search, diff, merge, inference, legacy paths")
-        Container(compat, "Compat functions", "SQL script in the caller's schema", "Legacy procedure names on top of jsonvd")
-        ContainerDb(catalog, "System catalog", "pg_catalog", "Function definitions, extension metadata")
-        ContainerDb(tables, "Caller tables", "jsonb columns", "The caller's documents")
-    }
+    caller -- "Reads and writes documents" --> tables
+    caller -- "Calls legacy names" --> compat
+    caller -- "Calls jsonvd.* functions" --> ext
+    compat -- "Delegates to" --> ext
+    ext -- "Registered in" --> catalog
 
-    Rel(caller, ext, "Calls jsonvd.* functions", "SQL")
-    Rel(caller, compat, "Calls legacy names", "SQL")
-    Rel(compat, ext, "Delegates to")
-    Rel(caller, tables, "Reads and writes documents", "SQL")
-    Rel(ext, catalog, "Registered in")
+    classDef person fill:#08427B,stroke:#073B6F,color:#fff
+    classDef container fill:#438DD5,stroke:#3C7FC0,color:#fff
+    classDef store fill:#438DD5,stroke:#3C7FC0,color:#fff
+    class caller person
+    class compat,ext container
+    class tables,catalog store
 ```
 
 **Notes**
