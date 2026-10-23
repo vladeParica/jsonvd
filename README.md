@@ -2,7 +2,7 @@
 
 # jsonvd
 
-[![CI](https://github.com/vladeParica/Lib-DV-PostgreSql/actions/workflows/ci.yml/badge.svg)](https://github.com/vladeParica/Lib-DV-PostgreSql/actions/workflows/ci.yml)
+[![CI](https://github.com/vladeParica/jsonvd/actions/workflows/ci.yml/badge.svg)](https://github.com/vladeParica/jsonvd/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A PostgreSQL extension with JSONB utilities the engine does not ship with:
@@ -18,8 +18,8 @@ layer for the original `*VD` procedures ([`legacy/`](legacy/)).
 ## Installation
 
 ```bash
-git clone https://github.com/vladeParica/Lib-DV-PostgreSql
-cd Lib-DV-PostgreSql
+git clone https://github.com/vladeParica/jsonvd
+cd jsonvd
 make install          # needs pg_config on PATH (postgresql-server-dev-XX package)
 ```
 

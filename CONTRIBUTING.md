@@ -8,7 +8,7 @@ Thanks for your interest in improving jsonvd!
 2. Make your change, with tests (see below).
 3. Open a pull request against `develop`.
 
-`master` holds released code. Every pull request needs a green CI run and the
+`main` holds released code. Every pull request needs a green CI run and the
 maintainer's approval before it can be merged.
 
 ## Tests
