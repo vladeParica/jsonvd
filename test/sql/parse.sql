@@ -10,5 +10,8 @@ FROM unnest(ARRAY[
 	'2018-05-11', 'TRUE', '  42  ', ''
 ]) AS v;
 
+-- A number too large for numeric is returned as a string, not an error
+SELECT jsonvd.parse_value('1e1000000') AS overflow, jsonvd.typeof_text('1e1000000') AS overflow_type;
+
 -- SQL NULL in, SQL NULL out
 SELECT jsonvd.parse_value(NULL) IS NULL AS strict_null;
