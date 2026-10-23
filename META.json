@@ -1,0 +1,49 @@
+{
+   "name": "jsonvd",
+   "abstract": "JSONB utilities: path search, diff, deep merge and schema inference",
+   "description": "Finds where a value is in a JSONB document, diffs and deep-merges documents (including RFC 7396 JSON Merge Patch), infers types and recordset definitions from JSON, and provides a compatibility layer for legacy path formats. Pure SQL and PL/pgSQL.",
+   "version": "1.0.0",
+   "maintainer": "Vlade Párica",
+   "license": "mit",
+   "provides": {
+      "jsonvd": {
+         "abstract": "JSONB utilities: path search, diff, deep merge and schema inference",
+         "file": "sql/jsonvd--1.0.0.sql",
+         "docfile": "README.md",
+         "version": "1.0.0"
+      }
+   },
+   "prereqs": {
+      "runtime": {
+         "requires": {
+            "PostgreSQL": "14.0.0",
+            "plpgsql": 0
+         }
+      }
+   },
+   "resources": {
+      "homepage": "https://github.com/vladeParica/jsonvd",
+      "bugtracker": {
+         "web": "https://github.com/vladeParica/jsonvd/issues"
+      },
+      "repository": {
+         "url": "https://github.com/vladeParica/jsonvd.git",
+         "web": "https://github.com/vladeParica/jsonvd",
+         "type": "git"
+      }
+   },
+   "release_status": "stable",
+   "tags": [
+      "json",
+      "jsonb",
+      "json diff",
+      "json merge patch",
+      "schema inference",
+      "path search"
+   ],
+   "generated_by": "Vlade Párica",
+   "meta-spec": {
+      "version": "1.0.0",
+      "url": "https://pgxn.org/meta/spec.txt"
+   }
+}
