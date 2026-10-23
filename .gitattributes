@@ -2,3 +2,9 @@
 * text=auto eol=lf
 *.png binary
 *.jpg binary
+
+# Left out of release archives (PGXN bundle, GitHub source zip): not needed to install or use jsonvd
+/.github export-ignore
+/.ai-dlc export-ignore
+/Logo export-ignore
+/legacy export-ignore

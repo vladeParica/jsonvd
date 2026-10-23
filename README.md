@@ -1,8 +1,10 @@
-<p align="center"><img src="Logo/jsonvd-logo.svg" alt="jsonvd" width="220"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/vladeParica/jsonvd/main/Logo/jsonvd-logo.svg" alt="jsonvd" width="220"></p>
 
 # jsonvd
 
 [![CI](https://github.com/vladeParica/jsonvd/actions/workflows/ci.yml/badge.svg)](https://github.com/vladeParica/jsonvd/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/vladeParica/jsonvd?color=0B4F96)](https://github.com/vladeParica/jsonvd/releases/latest)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%E2%80%9318-336791?logo=postgresql&logoColor=white)](docs/00-project/adr/0010-track-upstream-supported-postgresql-versions.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 JSONB utilities PostgreSQL does not ship with: **find where a value is**, **diff** two documents,
@@ -32,7 +34,7 @@ SELECT jsonvd.recordset_definition('[{"id":1,"name":"x"}]');      -- id bigint, 
 - [Function reference](docs/02-design/api-contracts.md)
 - [Install, upgrade and release](docs/05-deployment/deploy-guide.md) · [Migrating from the legacy `*VD` procedures](docs/05-deployment/migration-from-legacy.md)
 - [Project docs](docs/) — charter, requirements, design, ADRs, tests ([AI-DLC](.ai-dlc/))
-- [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md) · [Code of conduct](CODE_OF_CONDUCT.md) · [Security](SECURITY.md) · [Changelog](CHANGELOG.md)
 
 ## License
 

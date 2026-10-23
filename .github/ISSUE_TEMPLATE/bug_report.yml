@@ -1,0 +1,45 @@
+name: Bug report
+description: A jsonvd function returns a wrong result or fails
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! For security issues, please use [private vulnerability reporting](https://github.com/vladeParica/jsonvd/security/advisories/new) instead.
+  - type: input
+    id: postgres
+    attributes:
+      label: PostgreSQL version
+      description: Output of `SELECT version();`
+      placeholder: PostgreSQL 17.6 on x86_64-pc-linux-gnu
+    validations:
+      required: true
+  - type: input
+    id: jsonvd
+    attributes:
+      label: jsonvd version
+      description: Output of `SELECT jsonvd.version();`
+      placeholder: 1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: query
+    attributes:
+      label: Query to reproduce
+      description: A minimal, self-contained query. Use synthetic data.
+      render: sql
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: The output or the full error message.
+    validations:
+      required: true

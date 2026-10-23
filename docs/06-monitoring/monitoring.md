@@ -29,11 +29,11 @@ ORDER  BY total_time DESC;
 | Condition | Severity | Who / action |
 |---|---|---|
 | CI fails on `main` | High | Maintainer: fix or revert before the next release |
-| CI fails on a new PostgreSQL major version | Medium | Maintainer: open an issue, decide via ADR ([ADR-0004](../00-project/adr/0004-support-postgresql-14-and-later.md)) |
+| CI fails on a new PostgreSQL major version | Medium | Maintainer: open an issue, add it to the matrix per [ADR-0010](../00-project/adr/0010-track-upstream-supported-postgresql-versions.md) |
 | A `jsonvd` call hits `statement_timeout` in a user's database | User-defined | The user's DBA: reduce document size or raise the limit |
 
 ## SLOs
-- `<TODO — Human-in-the-Loop: response targets for issues and security reports, if any>`
+- Security reports: acknowledged within 7 days, assessed within 30 days ([SECURITY.md](../../SECURITY.md)).
 - Supported versions: every upstream-supported PostgreSQL major version is tested in CI.
 
 ## Dashboards / logs

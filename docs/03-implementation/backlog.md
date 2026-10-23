@@ -22,7 +22,8 @@ Version 1.0.0 is implemented and passes the regression suite on PostgreSQL 14–
 - [ ] Bump `actions/checkout` to v5 in CI (Node.js 20 deprecation warning on GitHub Actions).
 - [ ] Add a regression test for numbers that overflow `numeric` in `parse_value` (verified manually:
       `'1e1000000'` is returned as a string).
-- [ ] Add `META.json` and publish to PGXN — `<TODO — Human-in-the-Loop: decide if and when>`.
+- [ ] Publish to PGXN (#8): `META.json` and the release workflow are ready; needs the maintainer's PGXN
+      account and the `PGXN_USERNAME` / `PGXN_PASSWORD` secrets.
 - [ ] Define the upgrade-script process for 1.1.0 (`sql/jsonvd--1.0.0--1.1.0.sql`) — see the deploy guide.
 - [ ] Drop PostgreSQL 14 in 1.1.0 (#20) — [ADR-0010](../00-project/adr/0010-track-upstream-supported-postgresql-versions.md).
 

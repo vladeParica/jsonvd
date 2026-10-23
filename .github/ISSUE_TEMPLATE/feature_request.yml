@@ -1,0 +1,29 @@
+name: Feature request
+description: Propose a new function or a change in behavior
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do that PostgreSQL and jsonvd cannot do today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed function or behavior
+      description: Signature and an example call with its expected result.
+      render: sql
+    validations:
+      required: true
+  - type: textarea
+    id: native
+    attributes:
+      label: Native alternatives considered
+      description: jsonvd does not duplicate native PostgreSQL features. Is there a native way (`jsonb_set`, jsonpath, ...) and why is it not enough?
+  - type: textarea
+    id: edge
+    attributes:
+      label: Edge cases
+      description: NULLs, empty documents, very large inputs, invalid input — how should they behave?

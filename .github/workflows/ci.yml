@@ -2,7 +2,15 @@ name: CI
 
 on:
   push:
+    branches: [main, develop]
   pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -14,7 +22,7 @@ jobs:
       matrix:
         pg: [18, 17, 16, 15, 14]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Start PostgreSQL ${{ matrix.pg }}
         run: pg-start ${{ matrix.pg }}
       - name: Install and test

@@ -57,11 +57,19 @@ psql -d mydb -f compat/jsonvd_legacy.sql
 
 ## 5. Release process (maintainer)
 1. Merge the release changes into `develop` through pull requests (green CI, approval).
-2. Update `default_version` in `jsonvd.control`, add `sql/jsonvd--<old>--<new>.sql` (and keep the full
-   script for fresh installs), update `version()` and `CHANGELOG.md`.
-3. Open a pull request `develop` → `main`; merge after CI passes.
-4. Tag `v<version>` on `main` and create a GitHub release with the changelog entry.
-5. `<TODO — Human-in-the-Loop: publish to PGXN (needs META.json)>`
+2. On a `release/v<version>` branch: update `default_version` in `jsonvd.control`, `version` (twice) in
+   `META.json`, `version()`, add `sql/jsonvd--<old>--<new>.sql` (and keep the full script for fresh
+   installs), and rename the `CHANGELOG.md` section `## Unreleased` to `## <version> — YYYY-MM-DD`.
+   Changes that do not touch `sql/` or `compat/` (docs, CI, metadata) do not need a new version; they wait
+   under `Unreleased` for the next one.
+3. Open a pull request `release/v<version>` → `main`; merge after CI passes, then back-merge `main` into
+   `develop` with another pull request.
+4. Tag `v<version>` on `main` and push the tag. The `Release` workflow then:
+   - checks that the tag matches `jsonvd.control`, `META.json` and the SQL script,
+   - builds the PGXN bundle (`jsonvd-<version>.zip`; `.gitattributes` leaves dev-only folders out),
+   - creates the GitHub release with the changelog entry and the bundle attached,
+   - publishes to PGXN **only if** the repository secrets `PGXN_USERNAME` and `PGXN_PASSWORD` exist.
+5. `<TODO — Human-in-the-Loop: create a PGXN account, request the jsonvd distribution name and add the two secrets to enable PGXN publishing (#8)>`
 
 ## 6. Go-live checklist
 - [ ] CI green on every supported PostgreSQL version

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/vladeParica/jsonvd/security/advisories/new
+    about: Please report security issues privately, not as public issues.
+  - name: Function reference
+    url: https://github.com/vladeParica/jsonvd/blob/main/docs/02-design/api-contracts.md
+    about: Check how each function behaves before opening an issue.
