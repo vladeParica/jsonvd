@@ -1,0 +1,64 @@
+\set VERBOSITY terse
+SET client_min_messages = warning;
+CREATE EXTENSION IF NOT EXISTS jsonvd;
+SELECT * FROM jsonvd.diff(
+	'{"a":1,"b":[1,2,3],"c":{"x":1},"same":{"deep":[1,2]},"t":"x"}',
+	'{"a":2,"b":[1,5],"c":{"y":1},"same":{"deep":[1,2]},"t":["x"],"d":null}');
+ path  |   op    | old_value | new_value 
+-------+---------+-----------+-----------
+ {a}   | replace | 1         | 2
+ {b,1} | replace | 2         | 5
+ {b,2} | remove  | 3         | 
+ {c,x} | remove  | 1         | 
+ {c,y} | add     |           | 1
+ {d}   | add     |           | null
+ {t}   | replace | "x"       | ["x"]
+(7 rows)
+
+-- equal documents: no rows (even with different key order or whitespace)
+SELECT count(*) AS changes FROM jsonvd.diff('{"a":1, "b":[1,2]}', '{ "b" : [1,2], "a" : 1 }');
+ changes 
+---------
+       0
+(1 row)
+
+-- cases the original compare_jsonVD reported as equal
+SELECT count(*) AS changes_11_vs_22 FROM jsonvd.diff('[1,1]', '[2,2]');
+ changes_11_vs_22 
+------------------
+                2
+(1 row)
+
+SELECT count(*) AS changes_obj_vs_arr FROM jsonvd.diff('{"a":1}', '[1]');
+ changes_obj_vs_arr 
+--------------------
+                  1
+(1 row)
+
+-- root added or removed
+SELECT * FROM jsonvd.diff(NULL, '{"a":1}');
+ path | op  | old_value | new_value 
+------+-----+-----------+-----------
+ {}   | add |           | {"a": 1}
+(1 row)
+
+SELECT * FROM jsonvd.diff('{"a":1}', NULL);
+ path |   op   | old_value | new_value 
+------+--------+-----------+-----------
+ {}   | remove | {"a": 1}  | 
+(1 row)
+
+-- array indexes are ordered numerically
+SELECT path, op FROM jsonvd.diff('[0,1,2,3,4,5,6,7,8,9,10,11]', '[0,1,2,3,4,5,6,7,8,9,10,11,12]');
+ path | op  
+------+-----
+ {12} | add
+(1 row)
+
+SELECT path, op FROM jsonvd.diff('[0,1,2,3,4,5,6,7,8,9,10,11]', '[0,1,"x",3,4,5,6,7,8,9,10,"y"]');
+ path |   op    
+------+---------
+ {2}  | replace
+ {11} | replace
+(2 rows)
+

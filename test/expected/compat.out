@@ -1,0 +1,137 @@
+\set VERBOSITY terse
+SET client_min_messages = warning;
+\set ECHO none
+-- Bugs of the original procedures, now fixed
+SELECT json_push_vd('{"a":1}', 'Prueba', '1')   AS one,
+       json_push_vd('{"a":1}', 'k', '0')        AS zero,
+       json_push_vd('{"a":1}', 'k', 'false')    AS false_value;
+          one          |       zero       |     false_value      
+-----------------------+------------------+----------------------
+ {"a": 1, "Prueba": 1} | {"a": 1, "k": 0} | {"a": 1, "k": false}
+(1 row)
+
+SELECT json_push_vd('[]', 'k', '5')                      AS empty_array,
+       json_push_vd('{"name":"O''Brien"}', 'k', '5')    AS apostrophe;
+ empty_array |         apostrophe          
+-------------+-----------------------------
+ [{"k": 5}]  | {"k": 5, "name": "O'Brien"}
+(1 row)
+
+SELECT json_pushVD('{"a":1}', '"b"', 2), json_pushVD('{"a":1}', '"b"', true), json_pushVD('{"a":1}', '"b"', 'hello'::varchar);
+   json_pushvd    |     json_pushvd     |      json_pushvd       
+------------------+---------------------+------------------------
+ {"a": 1, "b": 2} | {"a": 1, "b": true} | {"a": 1, "b": "hello"}
+(1 row)
+
+SELECT compare_jsonVD('[1,1]', '[2,2]')                                         AS a,
+       compare_jsonVD('{"a":1}', '[1]')                                         AS b,
+       compare_jsonVD('{"a":"Avión Comercial"}', '{"a":"AviónComercial"}')      AS c,
+       compare_jsonVD('{"a":1, "b":[1,{"c":2}]}', '{"b":[1,{"c":2}], "a":1}')    AS d;
+        a        |        b        |        c        |       d       
+-----------------+-----------------+-----------------+---------------
+ Jsons Distintos | Jsons Distintos | Jsons Distintos | Jsons iguales
+(1 row)
+
+SELECT typeof_vd('null'), typeof_vd('yes'), typeof_vd('1.5'), typeof_vd('7'),
+       typeof_vd('true'), typeof_vd('{}'), typeof_vd('2018-05-11'), typeof_vd('hello');
+ typeof_vd | typeof_vd | typeof_vd | typeof_vd | typeof_vd | typeof_vd | typeof_vd | typeof_vd 
+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------
+ NULL      | text      | numeric   | int       | boolean   | json      | date      | text
+(1 row)
+
+SELECT to_json_build_vd('k', 'yes', 'n', '15', 'b', 'true', 'arr', '[]', 'nulls', 'null');
+                      to_json_build_vd                      
+------------------------------------------------------------
+ {"b": true, "k": "yes", "n": 15, "arr": [], "nulls": null}
+(1 row)
+
+SELECT json_agg_build_vd('k', 'v');
+ json_agg_build_vd 
+-------------------
+ [{"k": "v"}]
+(1 row)
+
+SELECT convert_array_jsonVD('{"tag":"#1"}#{"b":2}');
+   convert_array_jsonvd    
+---------------------------
+ [{"tag": "#1"}, {"b": 2}]
+(1 row)
+
+SELECT convert_array_jsonVD('{"a":1}#[1]');
+ERROR:  convert_array_jsonVD: every element must be an object
+SELECT json_deleteVD('{"name":"O''Brien","x":1}', 'x');
+    json_deletevd    
+---------------------
+ {"name": "O'Brien"}
+(1 row)
+
+SELECT json_deleteVD('{"name":"O''Brien","x":1}', '"name"');
+ json_deletevd 
+---------------
+ {"x": 1}
+(1 row)
+
+SELECT json_deleteVD('[{"a":1,"b":2},{"a":3,"b":4}]', 'b', 1);
+        json_deletevd         
+------------------------------
+ [{"a": 1, "b": 2}, {"a": 3}]
+(1 row)
+
+SELECT json_deleteVD('[1,2]', 'b', 0);
+ERROR:  json_deleteVD: position 0 is not an object
+SELECT valid_json_positionVD('[{"clave":"nullable","posicion":1},{"posicion":null}]');
+                           valid_json_positionvd                            
+----------------------------------------------------------------------------
+ [{"clave" : "nullable", "posicion" : 1}, {"clave" : null, "posicion" : 0}]
+(1 row)
+
+SELECT probando_locura('[{"a":1,"b":"x"},{"a":2.5,"c":true}]');
+        probando_locura        
+-------------------------------
+ [{"a":1,"b":"x","c":null},   +
+  {"a":2.5,"b":null,"c":true}]
+(1 row)
+
+-- Reading by legacy path
+SELECT return_jsonVD(d, '[{"clave":"nodo_maluma","posicion":2},{"posicion":4}]') AS missing,
+       return_jsonVD(d, '[{"clave":"nodo_maluma","posicion":2},{"posicion":1}]') AS found,
+       return_json_valueVD(d, '[{"clave":"nodo_maluma","posicion":2},{"posicion":1}]', 'song') AS value,
+       return_json_valueVD(d, '[{"clave":"nodo_maluma","posicion":2}]', 'no_key') AS missing_key,
+       return_json_valueVD(d, '[{"clave":"nodo_maluma","posicion":2},{}]', 'song') AS is_array
+FROM (SELECT '[{"song":"a"},{"song":"b"},{"song":"c","nodo_maluma":[{"song":"x"},{"song":"y"}]}]'::json AS d) AS s;
+  missing  |     found     | value |    missing_key     |                    is_array                    
+-----------+---------------+-------+--------------------+------------------------------------------------
+ No existe | {"song": "y"} | y     | La clave no existe | El Json final es un array, no consta de claves
+(1 row)
+
+-- Adding at a legacy path (the original add_position_jsonVD example)
+SELECT add_position_jsonVD(
+	'[{"x": 45, "demenecia": 458 }, {"y": 78, "locura": 458 }, {"ezz": {"z": 15, "desquiciado": 357, "nodo_pro": [{"jarvis": "locote"}, {"normal": 45 }] } }]',
+	'[{"clave": "ezz", "posicion": 2}, {"clave": "nodo_pro", "posicion": 0}, {"posicion": 1}]',
+	'prueba',
+	'{"prueba":1 ,"rawayana":"sin ti"}');
+                                                                                        add_position_jsonvd                                                                                         
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ [{"x": 45, "demenecia": 458}, {"y": 78, "locura": 458}, {"ezz": {"z": 15, "nodo_pro": [{"jarvis": "locote"}, {"normal": 45, "prueba": {"prueba": 1, "rawayana": "sin ti"}}], "desquiciado": 357}}]
+(1 row)
+
+-- Searching: search_positionVD returns a path that return_jsonVD can read
+SELECT search_jsonVD(d, '{"song":"y"}')            AS found,
+       search_jsonVD(d, '[{"song":"y"}]')          AS found_in_array,
+       search_jsonVD(d, '{"song":"zzz"}')          AS not_found,
+       search_positionVD(d, '{"song":"y"}')        AS path,
+       return_jsonVD(d, search_positionVD(d, '{"song":"y"}')::json) AS round_trip,
+       search_positionVD(d, '{"song":"zzz"}')      AS path_not_found
+FROM (SELECT '[{"song":"a"},{"song":"b"},{"song":"c","nodo_maluma":[{"song":"x"},{"song":"y"}]}]'::json AS d) AS s;
+ found | found_in_array | not_found |                            path                            |  round_trip   |       path_not_found       
+-------+----------------+-----------+------------------------------------------------------------+---------------+----------------------------
+     1 |              1 |         0 | [{"clave": "nodo_maluma", "posicion": 2}, {"posicion": 1}] | {"song": "y"} | No se encuentra el objecto
+(1 row)
+
+SELECT search_positionVD('{"id": 367, "categorias": [{"idCategoria": 2, "categoria": "Avión"}]}',
+                         '[{"idCategoria": 2, "categoria": "Avión"}]');
+              search_positionvd               
+----------------------------------------------
+ [{"clave": "categorias", "posicion": 0}, {}]
+(1 row)
+

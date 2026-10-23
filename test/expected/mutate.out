@@ -1,0 +1,79 @@
+\set VERBOSITY terse
+SET client_min_messages = warning;
+CREATE EXTENSION IF NOT EXISTS jsonvd;
+-- push with text: infers the type and keeps the key's case
+SELECT jsonvd.push('{"a":1}', 'Prueba', '1')      AS number,
+       jsonvd.push('{"a":1}', 'k', 'false')       AS boolean,
+       jsonvd.push('{"a":1}', 'k', 'hello')       AS string,
+       jsonvd.push('{"a":1}', 'k', '[1,2]')       AS array;
+        number         |       boolean        |         string         |         array         
+-----------------------+----------------------+------------------------+-----------------------
+ {"a": 1, "Prueba": 1} | {"a": 1, "k": false} | {"a": 1, "k": "hello"} | {"a": 1, "k": [1, 2]}
+(1 row)
+
+-- push with explicit jsonb
+SELECT jsonvd.push('{"a":1}', 'k', '"1"'::jsonb) AS explicit_string;
+  explicit_string   
+--------------------
+ {"a": 1, "k": "1"}
+(1 row)
+
+-- push replaces an existing key; quotes in values break nothing
+SELECT jsonvd.push('{"name":"O''Brien","a":1}', 'a', 'it''s "quoted"');
+                    push                     
+---------------------------------------------
+ {"a": "it's \"quoted\"", "name": "O'Brien"}
+(1 row)
+
+-- push only works on objects
+SELECT jsonvd.push('[1,2]', 'k', '1');
+ERROR:  jsonvd.push: a key can only be added to an object, got array
+-- set_path creates the intermediate objects
+SELECT jsonvd.set_path('{}', '{a,b,c}', '1');
+        set_path        
+------------------------
+ {"a": {"b": {"c": 1}}}
+(1 row)
+
+SELECT jsonvd.set_path('{"a":{"x":1}}', '{a,b}', '"new"');
+          set_path           
+-----------------------------
+ {"a": {"b": "new", "x": 1}}
+(1 row)
+
+SELECT jsonvd.set_path('{"a":null}', '{a,b}', 'true');
+      set_path      
+--------------------
+ {"a": {"b": true}}
+(1 row)
+
+SELECT jsonvd.set_path('{"list":[{"x":1},{"x":2}]}', '{list,1,y}', '3');
+                set_path                
+----------------------------------------
+ {"list": [{"x": 1}, {"x": 2, "y": 3}]}
+(1 row)
+
+SELECT jsonvd.set_path('{"a":1}', '{}', '"root"');
+ set_path 
+----------
+ "root"
+(1 row)
+
+-- cannot descend into a scalar
+SELECT jsonvd.set_path('{"a":1}', '{a,b}', '2');
+ERROR:  jsonvd.set_path: {a} is a number, cannot descend into it
+-- delete_key_deep removes the key at every level
+SELECT jsonvd.delete_key_deep(
+	'{"id":1,"password":"x","user":{"password":"y","roles":[{"password":"z","name":"admin"}]},"empty":{"password":1}}',
+	'password');
+                        delete_key_deep                         
+----------------------------------------------------------------
+ {"id": 1, "user": {"roles": [{"name": "admin"}]}, "empty": {}}
+(1 row)
+
+SELECT jsonvd.delete_key_deep('[]', 'a'), jsonvd.delete_key_deep('5', 'a');
+ delete_key_deep | delete_key_deep 
+-----------------+-----------------
+ []              | 5
+(1 row)
+

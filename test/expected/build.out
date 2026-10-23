@@ -1,0 +1,28 @@
+\set VERBOSITY terse
+SET client_min_messages = warning;
+CREATE EXTENSION IF NOT EXISTS jsonvd;
+SELECT jsonvd.build_object('id', '15', 'name', 'O''Brien', 'active', 'true',
+                           'tags', '["a","b"]', 'meta', '{"x":1}', 'empty', 'null');
+                                            build_object                                            
+----------------------------------------------------------------------------------------------------
+ {"id": 15, "meta": {"x": 1}, "name": "O'Brien", "tags": ["a", "b"], "empty": null, "active": true}
+(1 row)
+
+SELECT jsonvd.build_object(VARIADIC '{}'::text[]) AS empty;
+ empty 
+-------
+ {}
+(1 row)
+
+-- A SQL NULL value is stored as JSON null
+SELECT jsonvd.build_object('a', NULL);
+ build_object 
+--------------
+ {"a": null}
+(1 row)
+
+-- Errors: odd number of arguments and NULL key
+SELECT jsonvd.build_object('a', '1', 'b');
+ERROR:  jsonvd.build_object: expected key/value pairs, got 3 arguments
+SELECT jsonvd.build_object(NULL, '1');
+ERROR:  jsonvd.build_object: key of pair 1 is NULL
