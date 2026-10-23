@@ -1,6 +1,8 @@
 # Contributing
 
-Thanks for your interest in improving jsonvd!
+Thanks for your interest in improving jsonvd! By participating you agree to follow the
+[code of conduct](CODE_OF_CONDUCT.md). Security issues go through [SECURITY.md](SECURITY.md), not public
+issues.
 
 ## Workflow
 

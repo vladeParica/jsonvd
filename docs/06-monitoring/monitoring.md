@@ -33,7 +33,7 @@ ORDER  BY total_time DESC;
 | A `jsonvd` call hits `statement_timeout` in a user's database | User-defined | The user's DBA: reduce document size or raise the limit |
 
 ## SLOs
-- `<TODO — Human-in-the-Loop: response targets for issues and security reports, if any>`
+- Security reports: acknowledged within 7 days, assessed within 30 days ([SECURITY.md](../../SECURITY.md)).
 - Supported versions: every upstream-supported PostgreSQL major version is tested in CI.
 
 ## Dashboards / logs
