@@ -1,4 +1,4 @@
-<p align="center"><img src="Logo/jsonvd-logo.svg" alt="jsonvd" width="220"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/vladeParica/jsonvd/main/Logo/jsonvd-logo.svg" alt="jsonvd" width="220"></p>
 
 # jsonvd
 
