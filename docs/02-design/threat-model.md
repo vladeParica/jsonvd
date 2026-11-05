@@ -47,4 +47,5 @@ was the main defect of the legacy procedures.
   effect limited to the caller's own session.
 - **Encryption in transit and at rest:** provided by the host PostgreSQL (TLS, disk encryption); the
   library handles no data outside the server process.
-- `<TODO — Human-in-the-Loop: confirm acceptance of the DoS and search_path residual risks>`
+- **Approval:** both residual risks (DoS via large documents, `search_path` shadowing) accepted by
+  Vlade Párica on 2026-10-23 (#10). Revisit if a user reports a real-world impact.
